@@ -1,29 +1,36 @@
-import { useOutletContext } from "react-router-dom";
-import { Card } from "../componets/Card/Card";
+import { useOutletContext, useParams, Navigate } from "react-router-dom";
 
-export const Home = () => {
+export const Product = () => {
   const { products } = useOutletContext();
+  const { id } = useParams();
+  const findProduct = products.find((p) => p.id === +id);
+
+  if (!findProduct) {
+    return <Navigate to="/404" replace />;
+  }
 
   return (
     <section className="content">
       <div className="container">
         <div className="content-box">
-          <div className="content-main">
-            <h2 className="content-main__title">Рекомендации для вас</h2>
-            <div className="content-main__list">
-              {products.map((card) => (
-                <Card
-                  key={card.id}
-                  id={card.id}
-                  title={card.title}
-                  price={card.price}
-                  address={card.address}
-                  date={card.date}
-                  img={card.img}
-                />
-              ))}
+          <div className="content-product">
+            <div className="content-product__left">
+              <h2 className="content-product__title">{findProduct.title}</h2>
+              <img
+                className="content-product__img"
+                src={findProduct.img}
+                alt="product-image"
+              />
+              <p className="content-product__text">{findProduct.description}</p>
+            </div>
+            <div className="content-product__right">
+              <h2 className="content-product__price">{findProduct.price}</h2>
+              <button className="btn btn-primary btn-large">
+                Показать телефон
+              </button>
             </div>
           </div>
+
           <div className="content-side">
             <h3 className="content-side__title">Сервисы и услуги</h3>
 
@@ -33,7 +40,7 @@ export const Home = () => {
                   <img
                     className="content-side__list-item--img"
                     src="/image/logo/truck.svg"
-                    alt="side info"
+                    alt="Доставка"
                   />
                   <h5 className="content-side__list-item--title">Доставка</h5>
                   <p className="content-side__list-item--text">
@@ -44,7 +51,7 @@ export const Home = () => {
                   <img
                     className="content-side__list-item--img"
                     src="/image/logo/sedan.svg"
-                    alt="side info"
+                    alt="Автотека"
                   />
                   <h5 className="content-side__list-item--title">Автотека</h5>
                   <p className="content-side__list-item--text">
@@ -56,7 +63,7 @@ export const Home = () => {
                   <img
                     className="content-side__list-item--img"
                     src="/image/logo/house.svg"
-                    alt="side info"
+                    alt="Бронирование жилья"
                   />
                   <h5 className="content-side__list-item--title">
                     Онлайн-бронирование жилья
